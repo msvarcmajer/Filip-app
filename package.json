@@ -6,10 +6,10 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "yarn build && firebase deploy",
-   
+    "deploy": "yarn build && firebase deploy"
   },
   "dependencies": {
+    "@achrinza/node-ipc": "^9.2.2", // Moved here from scripts
     "@babel/types": "^7.22.19",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "^9",
@@ -21,7 +21,6 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vue": "^3.0.0",
     "vue-router": "^4.2.4"
-    "@achrinza/node-ipc": "^9.2.2",
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
