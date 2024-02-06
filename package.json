@@ -21,6 +21,7 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vue": "^3.0.0",
     "vue-router": "^4.2.4"
+    "@achrinza/node-ipc": "^9.2.2",
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
