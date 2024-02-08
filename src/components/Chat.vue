@@ -78,8 +78,10 @@ export default {
     const examInfoRef = firebase.firestore().collection('examInfo');
 
     const postExamInfo = async () => {
+      // Construct exam info string
       examInfo.value = `Naziv kolegija: ${nazivKolegija.value}, Vrijeme ispita: ${vrijemeIspita.value}, Prostorija: ${prostorija.value}`;
 
+      // Prepare data to be stored in Firestore
       const docData = {
         nazivKolegija: nazivKolegija.value,
         vrijemeIspita: vrijemeIspita.value,
@@ -87,7 +89,8 @@ export default {
       };
 
       try {
-        await examInfoRef.add(docData);
+        // Set exam info in Firestore
+        await examInfoRef.doc('latestExamInfo').set(docData);
       } catch (error) {
         console.error('Error posting exam info:', error);
       }
@@ -95,24 +98,23 @@ export default {
 
     const isFilip = computed(() => user.value?.email === 'filipslavic45@gmail.com');
 
+    // Real-time listener for examInfo collection
     watch(
       () => examInfoRef,
       async () => {
         try {
-          const snapshot = await examInfoRef.orderBy('timestamp', 'desc').limit(1).get(); // Order by timestamp and limit to one document
-          if (!snapshot.empty) {
-            const latestDoc = snapshot.docs[0];
-            const data = latestDoc.data();
+          const snapshot = await examInfoRef.doc('latestExamInfo').get();
+          if (snapshot.exists) {
+            const data = snapshot.data();
             examInfo.value = `Naziv kolegija: ${data.nazivKolegija}, Vrijeme ispita: ${data.vrijemeIspita}, Prostorija: ${data.prostorija}`;
           } else {
-            // If no documents found, clear the examInfo value
-            examInfo.value = '';
+            examInfo.value = ''; // Clear examInfo if document does not exist
           }
         } catch (error) {
           console.error('Error fetching exam info:', error);
         }
       },
-      { immediate: true }
+      { immediate: true } // Trigger the watcher immediately upon component creation
     );
 
     const bottom = ref(null);
