@@ -54,10 +54,10 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, defineComponent, emit } from 'vue'; // Import emit function from 'vue'
 import { useAuth } from '@/firebase';
 
-export default {
+export default defineComponent({
   setup() {
     const { signInWithEmailAndPassword } = useAuth();
     const email = ref('');
@@ -81,12 +81,13 @@ export default {
       // You can name the event anything you want, for example: 'close'
       // In the parent component, you should listen to this event and handle the closing of the modal
       // For example: <SignInModal @close="isModalOpen = false" />
-      this.$emit('close');
+      // `emit` function should be imported from 'vue'
+      emit('close');
     };
 
     return { email, password, errorMessage, signIn, closeModal };
   },
-};
+});
 </script>
 
 <style scoped>
