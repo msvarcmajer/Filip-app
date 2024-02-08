@@ -1,8 +1,10 @@
 <template>
   <div class="fixed inset-0 flex items-center justify-center">
     <div class="bg-white w-full max-w-sm p-6 rounded-lg shadow-lg">
-      <button @click="closeModal" class="close-button">&times;</button>
       <form @submit.prevent="signIn">
+        <!-- Close button -->
+        <button @click="closeModal" class="close-button">&times;</button>
+
         <!-- Email input -->
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
@@ -34,12 +36,16 @@
         <!-- Error message -->
         <div v-if="errorMessage" class="text-red-500 text-sm mb-4">{{ errorMessage }}</div>
         <!-- Sign In button -->
-        <div class="text-center">
+        <div class="flex justify-between items-center">
           <button
             type="submit"
             class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
           >
             Sign In
+          </button>
+          <!-- Close button -->
+          <button @click="closeModal" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">
+            Close
           </button>
         </div>
       </form>
