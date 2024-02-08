@@ -96,24 +96,24 @@ export default {
     const isFilip = computed(() => user.value?.email === 'filipslavic45@gmail.com');
 
     watch(
-  () => examInfoRef, // Watch for changes in the examInfoRef collection
-  async () => {
-    try {
-      const snapshot = await examInfoRef.orderBy('timestamp', 'desc').limit(1).get(); // Order by timestamp and limit to one document
-      if (!snapshot.empty) {
-        const latestDoc = snapshot.docs[0];
-        const data = latestDoc.data();
-        examInfo.value = `Naziv kolegija: ${data.nazivKolegija}, Vrijeme ispita: ${data.vrijemeIspita}, Prostorija: ${data.prostorija}`;
-      } else {
-        // If no documents found, clear the examInfo value
-        examInfo.value = '';
-      }
-    } catch (error) {
-      console.error('Error fetching exam info:', error);
-    }
-  },
-  { immediate: true } // Trigger the watcher immediately upon component creation
-);
+      () => examInfoRef,
+      async () => {
+        try {
+          const snapshot = await examInfoRef.orderBy('timestamp', 'desc').limit(1).get(); // Order by timestamp and limit to one document
+          if (!snapshot.empty) {
+            const latestDoc = snapshot.docs[0];
+            const data = latestDoc.data();
+            examInfo.value = `Naziv kolegija: ${data.nazivKolegija}, Vrijeme ispita: ${data.vrijemeIspita}, Prostorija: ${data.prostorija}`;
+          } else {
+            // If no documents found, clear the examInfo value
+            examInfo.value = '';
+          }
+        } catch (error) {
+          console.error('Error fetching exam info:', error);
+        }
+      },
+      { immediate: true }
+    );
 
     const bottom = ref(null);
     watch(
@@ -217,7 +217,7 @@ body {
   border-radius: 10px;
   z-index: 5;
   overflow-y: auto; /* Add this line to enable vertical scrolling */
-  max-height: 300px;
+  max-height: 300px; /* Limit the height to fit the remaining viewport height */
 }
 
 .uploaded-file-link {
