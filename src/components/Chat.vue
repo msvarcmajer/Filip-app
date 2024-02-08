@@ -96,20 +96,21 @@ export default {
     const isFilip = computed(() => user.value?.email === 'filipslavic45@gmail.com');
 
     watch(
-      () => examInfoRef,
-      async () => {
-        try {
-          const snapshot = await examInfoRef.get();
-          examInfo.value = snapshot.docs.map(doc => {
-            const data = doc.data();
-            return `Naziv kolegija: ${data.nazivKolegija}, Vrijeme ispita: ${data.vrijemeIspita}, Prostorija: ${data.prostorija}`;
-          }).join('\n');
-        } catch (error) {
-          console.error('Error fetching exam info:', error);
-        }
-      },
-      { immediate: true }
-    );
+  () => examInfoRef,
+  async () => {
+    try {
+      const snapshot = await examInfoRef.orderBy('timestamp', 'desc').limit(1).get(); // Order by timestamp and limit to one document
+      if (!snapshot.empty) {
+        const latestDoc = snapshot.docs[0];
+        const data = latestDoc.data();
+        examInfo.value = `Naziv kolegija: ${data.nazivKolegija}, Vrijeme ispita: ${data.vrijemeIspita}, Prostorija: ${data.prostorija}`;
+      }
+    } catch (error) {
+      console.error('Error fetching exam info:', error);
+    }
+  },
+  { immediate: true }
+);
 
     const bottom = ref(null);
     watch(
@@ -212,6 +213,8 @@ body {
   background-color: rgba(63, 60, 60, 0.8);
   border-radius: 10px;
   z-index: 5;
+  overflow-y: auto; /* Add this line to enable vertical scrolling */
+  max-height: calc(100vh - 330px); /* Limit the height to fit the remaining viewport height */
 }
 
 .uploaded-file-link {
