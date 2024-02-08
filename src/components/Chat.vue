@@ -4,7 +4,7 @@
     <div class="sidebar" v-if="isLogin">
       <h2>Informacije o ispitu</h2>
 
-      <!-- Display the form only if the user is filipslavic45@gmail.com -->
+      <!-- Display the form only if the user is filipslavic45@gmail.com || msvarcmajer@gmail.com -->
       <form v-if="isFilipsExamInfo && !examInfo" @submit.prevent="postExamInfo">
         <!-- Add form fields for Naziv kolegija, Vrijeme ispita, Prostorija here -->
         <!-- For example: -->
