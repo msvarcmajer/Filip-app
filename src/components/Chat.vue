@@ -126,10 +126,15 @@ export default {
     const file = ref(null);
     const uploadedFiles = ref([]);
 
-    const loadUploadedFiles = () => {
-      const storedFiles = localStorage.getItem('uploadedFiles');
-      if (storedFiles) {
-        uploadedFiles.value = JSON.parse(storedFiles);
+    const loadUploadedFiles = async () => {
+      try {
+        const querySnapshot = await storage.ref('uploads').listAll();
+        querySnapshot.items.forEach(async (itemRef) => {
+          const url = await itemRef.getDownloadURL();
+          uploadedFiles.value.push({ name: itemRef.name, url });
+        });
+      } catch (error) {
+        console.error('Error loading uploaded files:', error);
       }
     };
 
